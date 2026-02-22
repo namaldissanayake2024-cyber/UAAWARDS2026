@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UA Awards 2026 - Milestone Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .ua-blue { background-color: #003366; }
+        .ua-orange { color: #f37021; }
+        .tier-card { transition: all 0.3s ease; }
+        .achieved { border: 2px solid #22c55e; background-color: #f0fdf4; }
+        .locked { filter: grayscale(0.6); opacity: 0.8; }
+        .progress-fill { transition: width 1s ease-in-out; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto shadow-2xl rounded-3xl overflow-hidden bg-white">
+        <div class="ua-blue p-8 text-white text-center">
+            <h1 class="text-2xl font-black tracking-widest uppercase">Union Assurance PLC</h1>
+            <p class="text-blue-200 text-sm mt-1">Mid-Year Awards 2026 | ASM Category Tracker</p>
+        </div>
+
+        <div class="bg-gray-900 text-white p-4 flex justify-center gap-8 text-center">
+            <div><span id="days" class="block text-2xl font-bold">00</span><span class="text-[10px] uppercase text-gray-400">Days</span></div>
+            <div><span id="hours" class="block text-2xl font-bold">00</span><span class="text-[10px] uppercase text-gray-400">Hrs</span></div>
+            <div><span id="mins" class="block text-2xl font-bold">00</span><span class="text-[10px] uppercase text-gray-400">Mins</span></div>
+            <div><span id="secs" class="block text-2xl font-bold ua-orange">00</span><span class="text-[10px] uppercase text-gray-400">Secs</span></div>
+        </div>
+
+        <div class="p-6 bg-blue-50 grid grid-cols-1 md:grid-cols-3 gap-6 border-b border-blue-100">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-blue-200">
+                <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Current FYP (Millions)</label>
+                <input type="number" id="inputFYP" value="1.0" step="0.1" oninput="calculateProgress()" class="w-full text-2xl font-bold outline-none">
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-blue-200">
+                <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Current NOP</label>
+                <input type="number" id="inputNOP" value="0" oninput="calculateProgress()" class="w-full text-2xl font-bold outline-none">
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-blue-200">
+                <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Mid-Year Winners</label>
+                <input type="number" id="inputWinners" value="0" oninput="calculateProgress()" class="w-full text-2xl font-bold outline-none">
+            </div>
+        </div>
+
+        <div class="p-6 space-y-6">
+            
+            <div id="tier-bronze" class="tier-card p-6 rounded-2xl border-2 border-gray-100 relative overflow-hidden">
+                <div class="flex justify-between items-start relative z-10">
+                    <div>
+                        <span id="status-bronze" class="bg-gray-200 text-gray-600 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Locked</span>
+                        <h3 class="text-xl font-black mt-2">BRONZE MILESTONE</h3>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase">Reward</p>
+                        <p class="font-bold text-sm">Bronze Certificate</p>
+                    </div>
+                </div>
+                <div id="balance-bronze" class="mt-4 text-xs text-gray-500 font-medium space-y-1"></div>
+                <div class="w-full bg-gray-100 h-2 mt-4 rounded-full overflow-hidden">
+                    <div id="bar-bronze" class="bg-amber-600 h-full progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="tier-silver" class="tier-card p-6 rounded-2xl border-2 border-gray-100 relative overflow-hidden">
+                <div class="flex justify-between items-start relative z-10">
+                    <div>
+                        <span id="status-silver" class="bg-gray-200 text-gray-600 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Locked</span>
+                        <h3 class="text-xl font-black mt-2">SILVER MILESTONE</h3>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase">Reward</p>
+                        <p class="font-bold text-sm">Silver Cert. + LKR 20,000</p>
+                    </div>
+                </div>
+                <div id="balance-silver" class="mt-4 text-xs text-gray-500 font-medium space-y-1"></div>
+                <div class="w-full bg-gray-100 h-2 mt-4 rounded-full overflow-hidden">
+                    <div id="bar-silver" class="bg-slate-400 h-full progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="tier-gold" class="tier-card p-6 rounded-2xl border-2 border-gray-100 relative overflow-hidden">
+                <div class="flex justify-between items-start relative z-10">
+                    <div>
+                        <span id="status-gold" class="bg-gray-200 text-gray-600 text-[10px] font-bold px-2 py-1 rounded-full uppercase">Locked</span>
+                        <h3 class="text-xl font-black mt-2 text-orange-600">GOLD MILESTONE</h3>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold text-orange-400 uppercase">Grand Reward</p>
+                        <p class="font-bold text-sm text-orange-600">Thailand Tour (3N/4D)</p>
+                    </div>
+                </div>
+                <div id="balance-gold" class="mt-4 text-xs text-gray-500 font-medium space-y-1"></div>
+                <div class="w-full bg-gray-100 h-2 mt-4 rounded-full overflow-hidden">
+                    <div id="bar-gold" class="bg-orange-500 h-full progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const config = {
+            bronze: { fyp: 2.1, nop: 30, winners: 1 },
+            silver: { fyp: 4.5, nop: 40, winners: 1 },
+            gold:   { fyp: 7.2, nop: 45, winners: 2 }
+        };
+
+        function calculateProgress() {
+            const valFYP = parseFloat(document.getElementById('inputFYP').value) || 0;
+            const valNOP = parseInt(document.getElementById('inputNOP').value) || 0;
+            const valWin = parseInt(document.getElementById('inputWinners').value) || 0;
+
+            Object.keys(config).forEach(tier => {
+                const target = config[tier];
+                const card = document.getElementById(`tier-${tier}`);
+                const status = document.getElementById(`status-${tier}`);
+                const balance = document.getElementById(`balance-${tier}`);
+                const bar = document.getElementById(`bar-${tier}`);
+
+                // Calculate individual requirement progress
+                const fypGap = Math.max(target.fyp - valFYP, 0).toFixed(2);
+                const nopGap = Math.max(target.nop - valNOP, 0);
+                const winGap = Math.max(target.winners - valWin, 0);
+
+                // Tier is achieved only if ALL 3 conditions are met
+                const isAchieved = valFYP >= target.fyp && valNOP >= target.nop && valWin >= target.winners;
+                
+                // Calculate overall percentage for the bar (average of the three metrics)
+                const pFYP = Math.min((valFYP / target.fyp) * 100, 100);
+                const pNOP = Math.min((valNOP / target.nop) * 100, 100);
+                const pWin = Math.min((valWin / target.winners) * 100, 100);
+                const totalProgress = (pFYP + pNOP + pWin) / 3;
+
+                bar.style.width = totalProgress + "%";
+
+                if (isAchieved) {
+                    card.classList.add('achieved');
+                    card.classList.remove('locked');
+                    status.innerText = "✓ Achieved";
+                    status.className = "bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase";
+                    balance.innerHTML = `<span class="text-green-600 font-bold">Congratulations! Milestone reached.</span>`;
+                } else {
+                    card.classList.remove('achieved');
+                    card.classList.add('locked');
+                    status.innerText = "In Progress";
+                    status.className = "bg-blue-100 text-blue-600 text-[10px] font-bold px-2 py-1 rounded-full uppercase";
+                    
+                    let balanceHtml = "To reach this level: ";
+                    if (fypGap > 0) balanceHtml += `<span class="mr-3">Need <b>${fypGap}M</b> FYP</span>`;
+                    if (nopGap > 0) balanceHtml += `<span class="mr-3">Need <b>${nopGap}</b> NOP</span>`;
+                    if (winGap > 0) balanceHtml += `<span>Need <b>${winGap}</b> Winner(s)</span>`;
+                    balance.innerHTML = balanceHtml;
+                }
+            });
+        }
+
+        // Timer Logic
+        setInterval(() => {
+            const end = new Date("June 30, 2026 23:59:59").getTime();
+            const now = new Date().getTime();
+            const d = end - now;
+            document.getElementById('days').innerText = Math.floor(d / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').innerText = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById('mins').innerText = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById('secs').innerText = Math.floor((d % (1000 * 60)) / 1000);
+        }, 1000);
+
+        calculateProgress();
+    </script>
+</body>
+</html>
